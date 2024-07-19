@@ -14,6 +14,15 @@ BASE_URL = "https://physionet.org/files/eegmmidb/1.0.0/"
 class PhysionetMI(BaseDataset):
     """Physionet Motor Imagery dataset.
 
+    .. admonition:: Dataset summary
+
+
+        ===========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ===========  =======  =======  ==========  =================  ============  ===============  ===========
+        PhysionetMI      109       64           4                 23  3s            160Hz                      1
+        ===========  =======  =======  ==========  =================  ============  ===============  ===========
+
     Physionet MI dataset: https://physionet.org/pn4/eegmmidb/
 
     This data set consists of over 1500 one- and two-minute EEG recordings,
@@ -67,7 +76,7 @@ class PhysionetMI(BaseDataset):
            101 Issue 23 pp. E215–E220.
     """
 
-    def __init__(self, imagined=True, executed=False):
+    def __init__(self, imagined=True, executed=False, **kwargs):
         super().__init__(
             subjects=list(range(1, 110)),
             sessions_per_subject=1,
@@ -78,6 +87,7 @@ class PhysionetMI(BaseDataset):
             interval=[0, 3],
             paradigm="imagery",
             doi="10.1109/TBME.2004.827072",
+            **kwargs,
         )
 
         self.imagined = imagined
@@ -94,7 +104,7 @@ class PhysionetMI(BaseDataset):
             self.hand_runs += [3, 7, 11]
 
     def _load_one_run(self, subject, run, preload=True):
-        raw_fname = self._load_data(subject, runs=[run], verbose="ERROR")[0]
+        raw_fname = self._load_data(subject, runs=[run], path=self.path, verbose="ERROR")[0]
         raw = read_raw_edf(raw_fname, preload=preload, verbose="ERROR")
         raw.rename_channels(lambda x: x.strip("."))
         raw.rename_channels(lambda x: x.upper())
@@ -111,8 +121,8 @@ class PhysionetMI(BaseDataset):
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
         data = {}
-        sign = "EEGBCI"
-        get_dataset_path(sign, None)
+        # sign = "EEGBCI"
+        # get_dataset_path(sign, None)
 
         # hand runs
         idx = 0
@@ -149,9 +159,9 @@ class PhysionetMI(BaseDataset):
         if subject not in self.subject_list:
             raise (ValueError("Invalid subject number"))
 
-        sign = "EEGBCI"
-        get_dataset_path(sign, None)
-        paths = self._load_data(subject, runs=runs, verbose=verbose)
+        # sign = "EEGBCI"
+        # get_dataset_path(sign, None)
+        paths = self._load_data(subject, runs=runs, path=self.path,verbose=verbose)
         return paths
 
     def _load_data(self, subject, runs, path=None, force_update=False, verbose=None):

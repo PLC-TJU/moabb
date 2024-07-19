@@ -64,6 +64,15 @@ def eeg_data_path(base_path, subject):
 class Weibo2014(BaseDataset):
     """Motor Imagery dataset from Weibo et al 2014.
 
+    .. admonition:: Dataset summary
+
+
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name         #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Weibo2014       10       60           7                 80  4s            200Hz                      1
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+
     Dataset from the article *Evaluation of EEG oscillatory patterns and
     cognitive process during simple and compound limb motor imagery* [1]_.
 
@@ -98,7 +107,7 @@ class Weibo2014(BaseDataset):
            PloS one 9.12 (2014). https://doi.org/10.1371/journal.pone.0114853
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 11)),
             sessions_per_subject=1,
@@ -116,11 +125,12 @@ class Weibo2014(BaseDataset):
             interval=[3, 7],
             paradigm="imagery",
             doi="10.1371/journal.pone.0114853",
+            **kwargs,
         )
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        fname = self.data_path(subject)
+        fname = self.data_path(subject, path=self.path)
         # TODO: add 1s 0 buffer between trials and make continuous
         data = loadmat(
             fname,
@@ -173,7 +183,7 @@ class Weibo2014(BaseDataset):
         if subject not in self.subject_list:
             raise (ValueError("Invalid subject number"))
         path = get_dataset_path("WEIBO", path)
-        basepath = os.path.join(path, "MNE-weibo-2014")
+        basepath = os.path.join(path, "MNE-weibo2014-data")
         if not os.path.isdir(basepath):
             os.makedirs(basepath)
         return eeg_data_path(basepath, subject)

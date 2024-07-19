@@ -1,5 +1,4 @@
 """BMI/OpenBMI dataset."""
-
 from functools import partialmethod
 
 import numpy as np
@@ -12,7 +11,7 @@ from moabb.datasets import download as dl
 from moabb.datasets.base import BaseDataset
 
 
-Lee2019_URL = "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100542/"
+Lee2019_URL = "ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100542/"
 
 
 class Lee2019(BaseDataset):
@@ -25,12 +24,13 @@ class Lee2019(BaseDataset):
         test_run=None,
         resting_state=False,
         sessions=(1, 2),
+        **kwargs,
     ):
         if paradigm.lower() in ["imagery", "mi"]:
             paradigm = "imagery"
             code_suffix = "MI"
             interval = [
-                0.0,
+                0.0,#0.0
                 4.0,
             ]  # [1.0, 3.5] is the interval used in paper for online prediction
             events = dict(left_hand=2, right_hand=1)
@@ -69,6 +69,7 @@ class Lee2019(BaseDataset):
             interval=interval,
             paradigm=paradigm,
             doi="10.5524/100542",
+            **kwargs,
         )
         self.code_suffix = code_suffix
         self.train_run = train_run
@@ -166,7 +167,7 @@ class Lee2019(BaseDataset):
         """Return data for a single subejct."""
 
         sessions = {}
-        file_path_list = self.data_path(subject)
+        file_path_list = self.data_path(subject, path=self.path)
 
         for session in self.sessions:
             if self.train_run or self.test_run:
@@ -219,6 +220,15 @@ class Lee2019(BaseDataset):
 
 class Lee2019_MI(Lee2019):
     """BMI/OpenBMI dataset for MI.
+
+    .. admonition:: Dataset summary
+
+
+        ==========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name          #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ==========  =======  =======  ==========  =================  ============  ===============  ===========
+        Lee2019_MI       54       62           2                100  4s            1000Hz                     2
+        ==========  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from Lee et al 2019 [1]_.
 
@@ -275,11 +285,22 @@ class Lee2019_MI(Lee2019):
            https://doi.org/10.1093/gigascience/giz002
     """
 
-    __init__ = partialmethod(Lee2019.__init__, "MI")
+    # __init__ = partialmethod(Lee2019.__init__, "MI")
+    def __init__(self, **kwargs):
+        super().__init__(paradigm="MI", **kwargs)
 
 
 class Lee2019_ERP(Lee2019):
     """BMI/OpenBMI dataset for P300.
+
+    .. admonition:: Dataset summary
+
+
+        ===========  =======  =======  =================  ===============  ===============  ===========
+        Name           #Subj    #Chan  #Trials / class    Trials length    Sampling rate      #Sessions
+        ===========  =======  =======  =================  ===============  ===============  ===========
+        Lee2019_ERP       54       62  6900 NT / 1380 T   1s               1000Hz                     2
+        ===========  =======  =======  =================  ===============  ===============  ===========
 
     Dataset from Lee et al 2019 [1]_.
 
@@ -356,11 +377,22 @@ class Lee2019_ERP(Lee2019):
            https://doi.org/10.1093/gigascience/giz002
     """
 
-    __init__ = partialmethod(Lee2019.__init__, "ERP")
+    # __init__ = partialmethod(Lee2019.__init__, "ERP")
+    def __init__(self, **kwargs):
+        super().__init__(paradigm="ERP", **kwargs)
 
 
 class Lee2019_SSVEP(Lee2019):
     """BMI/OpenBMI dataset for SSVEP.
+
+    .. admonition:: Dataset summary
+
+
+        =============  =======  =======  ==========  =================  ===============  ===============  ===========
+        Name             #Subj    #Chan    #Classes    #Trials / class  Trials length    Sampling rate      #Sessions
+        =============  =======  =======  ==========  =================  ===============  ===============  ===========
+        Lee2019_SSVEP       54       16           4                 25  1s               1000Hz                     1
+        =============  =======  =======  ==========  =================  ===============  ===============  ===========
 
     Dataset from Lee et al 2019 [1]_.
 
@@ -418,4 +450,6 @@ class Lee2019_SSVEP(Lee2019):
            https://doi.org/10.1093/gigascience/giz002
     """
 
-    __init__ = partialmethod(Lee2019.__init__, "SSVEP")
+    # __init__ = partialmethod(Lee2019.__init__, "SSVEP")
+    def __init__(self, **kwargs):
+        super().__init__(paradigm="SSVEP", **kwargs)

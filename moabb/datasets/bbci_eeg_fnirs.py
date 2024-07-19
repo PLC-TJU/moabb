@@ -88,6 +88,7 @@ class BaseShin2017(BaseDataset):
         motor_imagery=True,
         mental_arithmetic=False,
         accept=False,
+        **kwargs,
     ):
         if not any([motor_imagery, mental_arithmetic]):
             raise (
@@ -111,6 +112,7 @@ class BaseShin2017(BaseDataset):
         self.motor_imagery = motor_imagery
         self.mental_arithmetic = mental_arithmetic
         self.accept = accept
+        # self.path = kwargs.get("path", None)
 
         super().__init__(
             subjects=list(range(1, 30)),
@@ -121,6 +123,7 @@ class BaseShin2017(BaseDataset):
             interval=[0, 10],
             paradigm=("/").join(paradigms),
             doi="10.1109/TNSRE.2016.2628057",
+            **kwargs,
         )
 
         if fnirs:
@@ -129,7 +132,7 @@ class BaseShin2017(BaseDataset):
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        fname, fname_mrk = self.data_path(subject)
+        fname, fname_mrk = self.data_path(subject, path=self.path)
         data = loadmat(fname, squeeze_me=True, struct_as_record=False)["cnt"]
         mrk = loadmat(fname_mrk, squeeze_me=True, struct_as_record=False)["mrk"]
 
@@ -177,8 +180,10 @@ class BaseShin2017(BaseDataset):
         if accept:
             self.accept = True
 
-        key = "MNE_DATASETS_BBCIFNIRS_PATH"
-        path = _get_path(path, key, "BBCI EEG-fNIRS")
+        if path is None:
+            key = "MNE_DATASETS_BBCIFNIRS_PATH"
+            path = _get_path(path, key, "BBCI EEG-fNIRS")
+            
         if not op.isdir(op.join(path, "MNE-eegfnirs-data")):
             os.makedirs(op.join(path, "MNE-eegfnirs-data"))
         if self.fnirs:
@@ -191,6 +196,15 @@ class BaseShin2017(BaseDataset):
 
 class Shin2017A(BaseShin2017):
     """Motor Imagey Dataset from Shin et al 2017.
+
+    .. admonition:: Dataset summary
+
+
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name         #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Shin2017A       29       30           2                 30  10s           200Hz                      3
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -293,18 +307,28 @@ class Shin2017A(BaseShin2017):
            `<https://www.gnu.org/licenses/gpl-3.0.txt>`_
     """
 
-    def __init__(self, accept=False):
+    def __init__(self, accept=False, **kwargs):
         super().__init__(
             suffix="A",
             fnirs=False,
             motor_imagery=True,
             mental_arithmetic=False,
             accept=accept,
+            **kwargs,
         )
 
 
 class Shin2017B(BaseShin2017):
     """Mental Arithmetic Dataset from Shin et al 2017.
+
+    .. admonition:: Dataset summary
+
+
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name         #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Shin2017B       29       30           2                 30  10s           200Hz                      3
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -400,11 +424,12 @@ class Shin2017B(BaseShin2017):
            `<https://www.gnu.org/licenses/gpl-3.0.txt>`_
     """
 
-    def __init__(self, accept=False):
+    def __init__(self, accept=False, **kwargs):
         super().__init__(
             suffix="B",
             fnirs=False,
             motor_imagery=False,
             mental_arithmetic=True,
             accept=accept,
+            **kwargs,
         )

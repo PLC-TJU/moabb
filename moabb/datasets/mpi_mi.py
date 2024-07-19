@@ -15,6 +15,15 @@ DOWNLOAD_URL = "https://zenodo.org/record/1217449/files/"
 class GrosseWentrup2009(BaseDataset):
     """Munich Motor Imagery dataset.
 
+    .. admonition:: Dataset summary
+
+
+        =================  =======  =======  ==========  =================  ============  ===============  ===========
+        Name                 #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =================  =======  =======  ==========  =================  ============  ===============  ===========
+        GrosseWentrup2009       10      128           2                150  7s            500Hz                      1
+        =================  =======  =======  ==========  =================  ============  ===============  ===========
+
     Motor imagery dataset from Grosse-Wentrup et al. 2009 [1]_.
 
     A trial started with the central display of a white fixation cross. After 3
@@ -55,7 +64,7 @@ class GrosseWentrup2009(BaseDataset):
            Engineering 56.4 (2009): 1209-1219.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 11)),
             sessions_per_subject=1,
@@ -64,12 +73,13 @@ class GrosseWentrup2009(BaseDataset):
             interval=[0, 7],
             paradigm="imagery",
             doi="10.1109/TBME.2008.2009768",
+            **kwargs,
         )
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
         raw = mne.io.read_raw_eeglab(
-            self.data_path(subject), preload=True, verbose="ERROR"
+            self.data_path(subject, path=self.path), preload=True, verbose="ERROR"
         )
         stim = raw.annotations.description.astype(np.dtype("<10U"))
 

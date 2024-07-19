@@ -50,6 +50,15 @@ def local_data_path(base_path, subject):
 class Zhou2016(BaseDataset):
     """Motor Imagery dataset from Zhou et al 2016.
 
+    .. admonition:: Dataset summary
+
+
+        ========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name        #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ========  =======  =======  ==========  =================  ============  ===============  ===========
+        Zhou2016        4       14           3                160  5s            250Hz                      3
+        ========  =======  =======  ==========  =================  ============  ===============  ===========
+
     Dataset from the article *A Fully Automated Trial Selection Method for
     Optimization of Motor Imagery Based Brain-Computer Interface* [1]_.
     This dataset contains data recorded on 4 subjects performing 3 type of
@@ -76,7 +85,7 @@ class Zhou2016(BaseDataset):
            https://doi.org/10.1371/journal.pone.0162657
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 5)),
             sessions_per_subject=3,
@@ -87,11 +96,12 @@ class Zhou2016(BaseDataset):
             interval=[0, 5],
             paradigm="imagery",
             doi="10.1371/journal.pone.0162657",
+            **kwargs,
         )
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        files = self.data_path(subject)
+        files = self.data_path(subject, path=self.path)
 
         out = {}
         for sess_ind, runlist in enumerate(files):

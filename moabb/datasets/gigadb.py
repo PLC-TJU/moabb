@@ -13,11 +13,20 @@ from .base import BaseDataset
 
 
 log = logging.getLogger(__name__)
-GIGA_URL = "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100295/mat_data/"
+GIGA_URL = "ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100295/mat_data/"
 
 
 class Cho2017(BaseDataset):
     """Motor Imagery dataset from Cho et al 2017.
+
+    .. admonition:: Dataset summary
+
+
+        =======  =======  =======  ==========  =================  ============  ===============  ===========
+        Name       #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =======  =======  =======  ==========  =================  ============  ===============  ===========
+        Cho2017       52       64           2                100  3s            512Hz                      1
+        =======  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from the paper [1]_.
 
@@ -55,7 +64,7 @@ class Cho2017(BaseDataset):
            GigaScience. https://doi.org/10.1093/gigascience/gix034
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 53)),
             sessions_per_subject=1,
@@ -64,11 +73,13 @@ class Cho2017(BaseDataset):
             interval=[0, 3],  # full trial is 0-3s, but edge effects
             paradigm="imagery",
             doi="10.5524/100295",
+            **kwargs,
         )
+        
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        fname = self.data_path(subject)
+        fname = self.data_path(subject, path=self.path)
 
         data = loadmat(
             fname,

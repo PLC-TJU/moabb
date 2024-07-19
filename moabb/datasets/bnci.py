@@ -735,7 +735,8 @@ class MNEBNCI(BaseDataset):
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        sessions = load_data(subject=subject, dataset=self.code, verbose=False)
+        
+        sessions = load_data(subject=subject, dataset=self.code, verbose=False, path=self.path)
         return sessions
 
     def data_path(
@@ -746,7 +747,7 @@ class MNEBNCI(BaseDataset):
             dataset=self.code,
             verbose=verbose,
             update_path=update_path,
-            path=path,
+            path=self.path,
             force_update=force_update,
             only_filenames=True,
         )
@@ -755,6 +756,15 @@ class MNEBNCI(BaseDataset):
 @depreciated_alias("BNCI2014001", "1.1")
 class BNCI2014_001(MNEBNCI):
     """BNCI 2014-001 Motor Imagery dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        BNCI2014_001       9       22           4                144  4s            250Hz                      2
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset IIa from BCI Competition 4 [1]_.
 
@@ -795,7 +805,7 @@ class BNCI2014_001(MNEBNCI):
            Frontiers in neuroscience, 6, p.55.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 10)),
             sessions_per_subject=2,
@@ -804,12 +814,22 @@ class BNCI2014_001(MNEBNCI):
             interval=[2, 6],
             paradigm="imagery",
             doi="10.3389/fnins.2012.00055",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2014002", "1.1")
 class BNCI2014_002(MNEBNCI):
     """BNCI 2014-002 Motor Imagery dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        BNCI2014_002       14       15           2                 80  5s            512Hz                      1
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
 
     Motor Imagery Dataset from [1]_.
 
@@ -848,7 +868,7 @@ class BNCI2014_002(MNEBNCI):
            Biomedical Engineering/Biomedizinische Technique, 61(1), pp.77-86.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 15)),
             sessions_per_subject=1,
@@ -857,12 +877,22 @@ class BNCI2014_002(MNEBNCI):
             interval=[3, 8],
             paradigm="imagery",
             doi="10.1515/bmt-2014-0117",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2014004", "1.1")
 class BNCI2014_004(MNEBNCI):
     """BNCI 2014-004 Motor Imagery dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        BNCI2014_004       9        3           2                360  4.5s          250Hz                      5
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset B from BCI Competition 2008.
 
@@ -922,7 +952,7 @@ class BNCI2014_004(MNEBNCI):
            Neural Systems and Rehabilitation Engineering 15, 473–482, 2007
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 10)),
             sessions_per_subject=5,
@@ -931,12 +961,22 @@ class BNCI2014_004(MNEBNCI):
             interval=[3, 7.5],
             paradigm="imagery",
             doi="10.1109/TNSRE.2007.906956",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2014008", "1.1")
 class BNCI2014_008(MNEBNCI):
     """BNCI 2014-008 P300 dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  =================  ===============  ===============  ===========
+        Name           #Subj    #Chan  #Trials / class    Trials length    Sampling rate      #Sessions
+        ============  =======  =======  =================  ===============  ===============  ===========
+        BNCI2014_008        8        8  3500 NT / 700 T    1s               256Hz                      1
+        ============  =======  =======  =================  ===============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -984,7 +1024,7 @@ class BNCI2014_008(MNEBNCI):
            vol. 70, n. 6, pagg. 510–523, 1988.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 9)),
             sessions_per_subject=1,
@@ -993,12 +1033,22 @@ class BNCI2014_008(MNEBNCI):
             interval=[0, 1.0],
             paradigm="p300",
             doi="10.3389/fnhum.2013.00732",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2014009", "1.1")
 class BNCI2014_009(MNEBNCI):
     """BNCI 2014-009 P300 dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  =================  ===============  ===============  ===========
+        Name           #Subj    #Chan  #Trials / class    Trials length    Sampling rate      #Sessions
+        ============  =======  =======  =================  ===============  ===============  ===========
+        BNCI2014_009       10       16  1440 NT / 288 T    0.8s             256Hz                      3
+        ============  =======  =======  =================  ===============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -1037,7 +1087,7 @@ class BNCI2014_009(MNEBNCI):
            Engineering, vol. 11, number 3.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 11)),
             sessions_per_subject=3,
@@ -1046,12 +1096,22 @@ class BNCI2014_009(MNEBNCI):
             interval=[0, 0.8],
             paradigm="p300",
             doi="10.1088/1741-2560/11/3/035008",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2015001", "1.1")
 class BNCI2015_001(MNEBNCI):
     """BNCI 2015-001 Motor Imagery dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        BNCI2015_001       12       13           2                200  5s            512Hz                      2
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -1083,7 +1143,7 @@ class BNCI2015_001(MNEBNCI):
            and Rehabilitation Engineering, 20(3), 313-319.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         # FIXME: some participant have 3 sessions
         super().__init__(
             subjects=list(range(1, 13)),
@@ -1093,6 +1153,7 @@ class BNCI2015_001(MNEBNCI):
             interval=[0, 5],
             paradigm="imagery",
             doi="10.1109/tnsre.2012.2189584",
+            **kwargs,
         )
 
 
@@ -1100,6 +1161,14 @@ class BNCI2015_001(MNEBNCI):
 class BNCI2015_003(MNEBNCI):
     """BNCI 2015-003 P300 dataset.
 
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  =================  ===============  ===============  ===========
+        Name           #Subj    #Chan  #Trials / class    Trials length    Sampling rate      #Sessions
+        ============  =======  =======  =================  ===============  ===============  ===========
+        BNCI2015_003       10        8  1500 NT / 300 T    0.8s             256Hz                      1
+        ============  =======  =======  =================  ===============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -1119,7 +1188,7 @@ class BNCI2015_003(MNEBNCI):
             (BCI)?. Neuroscience Letters, vol. 462, pp. 94–98.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 11)),
             sessions_per_subject=1,
@@ -1128,12 +1197,22 @@ class BNCI2015_003(MNEBNCI):
             interval=[0, 0.8],
             paradigm="p300",
             doi="10.1016/j.neulet.2009.06.045",
+            **kwargs,
         )
 
 
 @depreciated_alias("BNCI2015004", "1.1")
 class BNCI2015_004(MNEBNCI):
     """BNCI 2015-004 Motor Imagery dataset.
+
+    .. admonition:: Dataset summary
+
+
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        Name           #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
+        BNCI2015_004       9       30           5                 80  7s            256Hz                      2
+        ============  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset from [1]_.
 
@@ -1184,7 +1263,7 @@ class BNCI2015_004(MNEBNCI):
            https://doi.org/10.1371/journal.pone.0123727
     """
 
-    def __init__(self):
+    def __init__(self,**kwargs):
         super().__init__(
             subjects=list(range(1, 10)),
             sessions_per_subject=2,
@@ -1193,4 +1272,5 @@ class BNCI2015_004(MNEBNCI):
             interval=[3, 10],
             paradigm="imagery",
             doi="10.1371/journal.pone.0123727",
+            **kwargs,
         )

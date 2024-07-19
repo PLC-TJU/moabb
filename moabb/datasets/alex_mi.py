@@ -12,6 +12,15 @@ ALEX_URL = "https://zenodo.org/record/806023/files/"
 class AlexMI(BaseDataset):
     """Alex Motor Imagery dataset.
 
+    .. admonition:: Dataset summary
+
+
+        ======  =======  =======  ==========  =================  ============  ===============  ===========
+        Name      #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        ======  =======  =======  ==========  =================  ============  ===============  ===========
+        AlexMI        8       16           3                 20  3s            512Hz                      1
+        ======  =======  =======  ==========  =================  ============  ===============  ===========
+
     Motor imagery dataset from the PhD dissertation of A. Barachant [1]_.
 
     This Dataset contains EEG recordings from 8 subjects, performing 2 task of
@@ -35,7 +44,7 @@ class AlexMI(BaseDataset):
            https://tel.archives-ouvertes.fr/tel-01196752
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__(
             subjects=list(range(1, 9)),
             sessions_per_subject=1,
@@ -43,11 +52,12 @@ class AlexMI(BaseDataset):
             code="AlexandreMotorImagery",
             interval=[0, 3],
             paradigm="imagery",
+            **kwargs,
         )
 
     def _get_single_subject_data(self, subject):
         """Return data for a single subject."""
-        raw = Raw(self.data_path(subject), preload=True, verbose="ERROR")
+        raw = Raw(self.data_path(subject, path = self.path), preload=True, verbose="ERROR")
         return {"0": {"0": raw}}
 
     def data_path(
