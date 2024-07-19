@@ -26,6 +26,14 @@ LIU2024_EVENTS = "https://figshare.com/ndownloader/files/38516084"
 
 class Liu2024(BaseDataset):
     """
+    .. admonition:: Dataset summary
+
+
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Name         #Subj    #Chan    #Classes    #Trials / class  Trials len    Sampling rate      #Sessions
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
+        Liu2024        50       29           2                  20  4s            500Hz                      1
+        =========  =======  =======  ==========  =================  ============  ===============  ===========
 
     Dataset [1]_ from the study on motor imagery [2]_.
 
@@ -74,7 +82,7 @@ class Liu2024(BaseDataset):
 
     """
 
-    def __init__(self, break_events=False, instr_events=False):
+    def __init__(self, break_events=False, instr_events=False, **kwargs):
         self.break_events = break_events
         self.instr_events = instr_events
         events = {"left_hand": 1, "right_hand": 2}
@@ -90,6 +98,7 @@ class Liu2024(BaseDataset):
             interval=(2, 6),
             paradigm="imagery",
             doi="10.1038/s41597-023-02787-8",
+            **kwargs,
         )
 
     def data_path(
@@ -228,7 +237,7 @@ class Liu2024(BaseDataset):
             A dictionary containing the raw data for the subject.
         """
 
-        file_path_list = self.data_path(subject)[0]
+        file_path_list = self.data_path(subject, path=self.path)[0]
         path_electrodes, path_events = self.data_infos()
 
         with warnings.catch_warnings():
